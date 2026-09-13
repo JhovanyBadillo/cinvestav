@@ -1,3 +1,7 @@
 .idea
 .vscode
-
+.DS_Store
+venv/
+b/
+*.pdf
+cmake-build-debug
