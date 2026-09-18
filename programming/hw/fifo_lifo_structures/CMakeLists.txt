@@ -7,4 +7,6 @@ add_executable(fifo_lifo_structures main.c
         stack.h
         stack.c
         node.h
-        node.c)
+        node.c
+        queue.h
+        queue.c)

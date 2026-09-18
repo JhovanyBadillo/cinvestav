@@ -10,6 +10,7 @@ struct node {
 };
 
 node_t *create_node(int value);
+node_t *make_null_node();
 void delete_node(node_t *node);
 
 #endif //FIFO_LIFO_STRUCTURES_NODE_H

@@ -15,6 +15,12 @@ node_t *create_node(const int value) {
   return node;
 }
 
+node_t *make_null_node() {
+  node_t *node = malloc(sizeof *node);
+
+  return node;
+}
+
 void delete_node(node_t *node) {
   if (node == nullptr) {
     return;
