@@ -1,4 +1,4 @@
-optimised (-O2)
+double version optimised (-O2)
 degree: 10000
 how much padding: 0
 trial: 985
