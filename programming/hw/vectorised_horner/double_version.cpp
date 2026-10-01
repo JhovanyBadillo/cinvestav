@@ -49,7 +49,7 @@ double horner_intrinsic(double h, double *a, long degree)
         Y = _mm256_mul_pd(Y, X);
     }
 
-    Y = _mm256_add_pd(Y, A[i]); // i = size / 4 - 1
+    Y = _mm256_add_pd(Y, A[i]); // i = degree / 4 - 1
     R = (double *)(&Y);
 
     P = R[3] * h;
