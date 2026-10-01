@@ -1,0 +1,48 @@
+no optimised
+degree: 10000
+how much padding: 0
+trial: 985
+	vectorised: inf (23552 ns)
+	standard: inf (37370 ns)
+trial: 986
+	vectorised: inf (26378 ns)
+	standard: inf (37305 ns)
+trial: 987
+	vectorised: inf (27196 ns)
+	standard: inf (37285 ns)
+trial: 988
+	vectorised: inf (27004 ns)
+	standard: inf (35289 ns)
+trial: 989
+	vectorised: inf (26018 ns)
+	standard: inf (35284 ns)
+trial: 990
+	vectorised: inf (25929 ns)
+	standard: inf (35279 ns)
+trial: 991
+	vectorised: inf (26930 ns)
+	standard: inf (35288 ns)
+trial: 992
+	vectorised: inf (26103 ns)
+	standard: inf (35280 ns)
+trial: 993
+	vectorised: inf (26767 ns)
+	standard: inf (35267 ns)
+trial: 994
+	vectorised: inf (24763 ns)
+	standard: inf (34338 ns)
+trial: 995
+	vectorised: inf (36175 ns)
+	standard: inf (44343 ns)
+trial: 996
+	vectorised: inf (21969 ns)
+	standard: inf (34371 ns)
+trial: 997
+	vectorised: inf (25416 ns)
+	standard: inf (34349 ns)
+trial: 998
+	vectorised: inf (25766 ns)
+	standard: inf (34331 ns)
+trial: 999
+	vectorised: inf (25978 ns)
+	standard: inf (34337 ns)
