@@ -5,16 +5,17 @@
 
 typedef struct dictionary dictionary_t;
 
-struct dictionary {
+struct dictionary
+{
 	int capacity;
 	element_t **hash_table;
 };
 
-int hash_function(key_t key, int capacity);
+int hash_function(class_t key, int capacity);
 dictionary_t *make_null_dictionary(int capacity);
-int member(dictionary_t *dict, key_t key, value_t value);
-void insert(dictionary_t *dict, key_t key, value_t value);
-void delete(dictionary_t *dict, key_t key, value_t value);
+int member(dictionary_t *dict, class_t key, value_t value);
+void insert(dictionary_t *dict, class_t key, value_t value);
+void delete (dictionary_t *dict, class_t key, value_t value);
 void destroy_dictionary(dictionary_t *dict);
 
-#endif //DICTIONARY_H
+#endif // DICTIONARY_H
