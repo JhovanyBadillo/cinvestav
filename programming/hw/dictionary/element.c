@@ -13,6 +13,7 @@ element_t *create_element(class_t key, value_t value)
 		exit(1);
 	}
 
+	/* strdup allocates memory that must be deallocated later */
 	element->key = strdup(key);
 	element->value = value;
 	element->next = nullptr;

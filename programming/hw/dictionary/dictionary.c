@@ -113,11 +113,71 @@ void insert(dictionary_t *dict, class_t key, value_t value)
 	}
 }
 
+void delete(dictionary_t *dict, class_t key, value_t value)
+{
+	/* If exists, deletes element with that value. */
+	if (dict == nullptr)
+	{
+		printf("no valid dictionary\n");
+		exit(1);
+	}
+
+	const int i = hash_function(key, dict->capacity);
+
+	if ((dict->hash_table)[i] != nullptr)
+	{
+		if (strcmp(((dict->hash_table)[i])->key, key) == 0 &&
+			((dict->hash_table)[i])->value == value)
+		{
+			/* the sought element is the first */
+			element_t *next = ((dict->hash_table)[i])->next;
+			free((dict->hash_table)[i]->key);
+			free((dict->hash_table)[i]);
+			(dict->hash_table)[i] = next;
+		}
+		else
+		{
+			element_t *current = (dict->hash_table)[i];
+
+			while (current->next != nullptr)
+			{
+				if (strcmp(current->next->key, key) == 0 && current->next->value == value)
+				{
+					element_t *element = current->next;
+					free(current->next->key);
+					free(current->next);
+					current->next = element->next;
+				}
+				else
+				{
+					current = current->next;
+				}
+			}
+		}
+	}
+}
+
 void destroy_dictionary(dictionary_t *dict)
 {
 	if (dict == nullptr)
 	{
 		return;
+	}
+
+	if (dict->hash_table != nullptr)
+	{
+		int i;
+		for (i = 0; i < dict->capacity; i++)
+		{
+			if (dict->hash_table[i] != nullptr)
+			{
+				free(dict->hash_table[i]->key);
+			}
+			free(dict->hash_table[i]);
+			/* remains freeing each intermediate element inserted in
+			buckets that have not been deleted by operation delete */
+		}
+		free(dict->hash_table);
 	}
 
 	free(dict);
