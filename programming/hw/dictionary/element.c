@@ -7,6 +7,12 @@ element_t *create_element(class_t key, value_t value)
 {
 	element_t *element = malloc(sizeof *element);
 
+	if (element == nullptr)
+	{
+		printf("failed malloc\n");
+		exit(1);
+	}
+
 	element->key = strdup(key);
 	element->value = value;
 	element->next = nullptr;
