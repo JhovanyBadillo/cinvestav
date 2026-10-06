@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "dictionary.h"
 
 int hash_function(class_t key, int capacity)
@@ -43,6 +44,73 @@ dictionary_t *make_null_dictionary(int capacity)
 	}
 
 	return dict;
+}
+
+int member(dictionary_t *dict, class_t key, value_t value)
+{
+	/* Find the bucket where key lives and then traverse the
+	corresponding list if any. 1 if key and value exist,
+	-1 otherwise. */
+
+	if (dict == nullptr)
+	{
+		printf("no valid dictionary\n");
+		exit(1);
+	}
+
+	const int i = hash_function(key, dict->capacity);
+
+	element_t *current = (dict->hash_table)[i];
+
+	while (current != nullptr)
+	{
+		if ((current->value) == value && strcmp(key, current->key) == 0)
+		{
+			return 1;
+		}
+		current = current->next;
+	}
+
+	return -1;
+}
+
+void insert(dictionary_t *dict, class_t key, value_t value)
+{
+	if (dict == nullptr)
+	{
+		printf("no valid dictionary\n");
+		exit(1);
+	}
+
+	const int i = hash_function(key, dict->capacity);
+
+	element_t *element = create_element(key, value);
+
+	element_t *current = (dict->hash_table)[i];
+
+	if (current == nullptr)
+	{
+		/* The ith bucket has no elements */
+		(dict->hash_table)[i] = element;
+	}
+	else
+	{
+		/* The ith bucket has some elements. If not member, insert
+		element at the end. */
+		if (member(dict, key, value) < 0)
+		{
+			while ((current->next) != nullptr)
+			{
+				current = current->next;
+			}
+
+			current->next = element;
+		}
+		else
+		{
+			printf("{%s: %d} is already a member (bucket %d)\n", key, value, i);
+		}
+	}
 }
 
 void destroy_dictionary(dictionary_t *dict)
