@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "dictionary.h"
 
@@ -19,8 +20,27 @@ dictionary_t *make_null_dictionary(int capacity)
 {
 	dictionary_t *dict = malloc(sizeof *dict);
 
+	if (dict == nullptr)
+	{
+		printf("failed malloc\n");
+		exit(1);
+	}
+
 	dict->capacity = capacity;
-	dict->hash_table = malloc(capacity * sizeof(element_t));
+	dict->hash_table = malloc(capacity * sizeof(element_t *));
+
+	if ((dict->hash_table) == nullptr)
+	{
+		printf("failed malloc\n");
+		free(dict);
+		exit(1);
+	}
+
+	int i;
+	for (i = 0; i < capacity; i++)
+	{
+		(dict->hash_table)[i] = nullptr;
+	}
 
 	return dict;
 }
