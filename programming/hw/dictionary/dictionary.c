@@ -3,6 +3,9 @@
 #include <string.h>
 #include "dictionary.h"
 
+/* Implementation based on the open hashing discussion given in the
+book Data Structures and Algorithms by Aho, Hopcroft and Ullman. */
+
 int hash_function(class_t key, int capacity)
 {
 	/* hash function suggested by an LLM */
@@ -82,6 +85,8 @@ void insert(dictionary_t *dict, class_t key, value_t value)
 		exit(1);
 	}
 
+	unsigned short inserted = 0;
+
 	const int i = hash_function(key, dict->capacity);
 
 	element_t *element = create_element(key, value);
@@ -92,11 +97,13 @@ void insert(dictionary_t *dict, class_t key, value_t value)
 	{
 		/* The ith bucket has no elements */
 		(dict->hash_table)[i] = element;
+		inserted = 1;
 	}
 	else
 	{
 		/* The ith bucket has some elements. If not member, insert
-		element at the end. */
+		element at the end. It could be inserted at the beginning,
+		this way we don't have to traverse the entire list. */
 		if (member(dict, key, value) < 0)
 		{
 			while ((current->next) != nullptr)
@@ -105,11 +112,19 @@ void insert(dictionary_t *dict, class_t key, value_t value)
 			}
 
 			current->next = element;
+
+			inserted = 1;
 		}
 		else
 		{
-			printf("{%s: %d} is already a member (bucket %d)\n", key, value, i);
+			printf("{%s: %d} is already a member (bucket %d)\n",
+				   key, value, i);
 		}
+	}
+
+	if (inserted)
+	{
+		printf("{%s: %d} inserted. Bucket was %d\n", key, value, i);
 	}
 }
 
@@ -121,6 +136,8 @@ void delete(dictionary_t *dict, class_t key, value_t value)
 		printf("no valid dictionary\n");
 		exit(1);
 	}
+
+	unsigned short deleted = 0;
 
 	const int i = hash_function(key, dict->capacity);
 
@@ -134,6 +151,8 @@ void delete(dictionary_t *dict, class_t key, value_t value)
 			free((dict->hash_table)[i]->key);
 			free((dict->hash_table)[i]);
 			(dict->hash_table)[i] = next;
+
+			deleted = 1;
 		}
 		else
 		{
@@ -141,12 +160,14 @@ void delete(dictionary_t *dict, class_t key, value_t value)
 
 			while (current->next != nullptr)
 			{
-				if (strcmp(current->next->key, key) == 0 && current->next->value == value)
+				if (strcmp(current->next->key, key) == 0 &&
+					current->next->value == value)
 				{
-					element_t *element = current->next;
 					free(current->next->key);
 					free(current->next);
-					current->next = element->next;
+
+					deleted = 1;
+					break;
 				}
 				else
 				{
@@ -154,6 +175,25 @@ void delete(dictionary_t *dict, class_t key, value_t value)
 				}
 			}
 		}
+	}
+
+	if (deleted)
+	{
+		printf("{%s: %d} deleted. Bucket was %d\n", key, value, i);
+	}
+	else
+	{
+		printf("{%s: %d} not in dictionary\n", key, value);
+	}
+}
+
+void destroy_bucket(element_t *element)
+{
+	if (element != nullptr)
+	{
+		destroy_bucket(element->next);
+		free(element->key);
+		free(element);
 	}
 }
 
@@ -171,14 +211,35 @@ void destroy_dictionary(dictionary_t *dict)
 		{
 			if (dict->hash_table[i] != nullptr)
 			{
-				free(dict->hash_table[i]->key);
+				destroy_bucket(dict->hash_table[i]);
 			}
-			free(dict->hash_table[i]);
-			/* remains freeing each intermediate element inserted in
-			buckets that have not been deleted by operation delete */
 		}
 		free(dict->hash_table);
 	}
 
 	free(dict);
+}
+
+void print_bucket(element_t *element)
+{
+	if (element != nullptr)
+	{
+		printf(" %d", element->value);
+		print_bucket(element->next);
+	}
+}
+
+void print_dictionary(dictionary_t *dict)
+{
+	unsigned short i;
+
+	for (i = 0; i < dict->capacity; i++)
+	{
+		if (dict->hash_table[i] != nullptr)
+		{
+			printf("%s -> ", dict->hash_table[i]->key);
+			print_bucket(dict->hash_table[i]);
+			printf("\n");
+		}
+	}
 }
