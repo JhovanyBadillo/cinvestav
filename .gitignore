@@ -5,3 +5,5 @@ venv/
 b/
 *.pdf
 cmake-build-debug
+notes/
+.ipynb_checkpoints
