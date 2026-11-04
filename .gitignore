@@ -7,3 +7,6 @@ b/
 cmake-build-debug
 notes/
 .ipynb_checkpoints
+algorithms/
+*.o
+*.txt
