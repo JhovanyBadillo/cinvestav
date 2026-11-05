@@ -58,33 +58,33 @@ por ver:
 int main()
 {
     size_t i;
+    pid_t pid;
     limits_t limits[NUM_CORES];
 
     divider(NUM_CORES, SIZE, limits);
 
-    pid_t pid = fork();
-
-    if (pid == -1)
+    for (i = 0; i < NUM_CORES; i++)
     {
-        printf("fork failed\n");
-        exit(pid);
+        pid = fork();
+
+        if (pid == -1)
+        {
+            printf("fork failed\n");
+            _exit(EXIT_FAILURE);
+        }
+
+        if (pid == 0)
+        {
+            limits_t bundle = limits[i];
+
+            printf("[%ld:%d] inf: %ld, sup: %ld\n", i, getpid(), bundle.inf, bundle.sup);
+            _exit(EXIT_SUCCESS); /* necessary for the for loop to terminate */
+        }
     }
 
-    if (pid == 0)
-    { /* this block is executed only by the child process */
-        limits_t child_limits = limits[0];
-
-        printf("[%d] child limits:\n\tinf: %ld, sup: %ld\n", getpid(), child_limits.inf, child_limits.sup);
-
-        printf("child was %d\n", getpid());
-
-        exit(EXIT_SUCCESS);
-    }
-    else
-    { /* this block is executed only by the parent process */
+    for (i = 0; i < NUM_CORES; i++)
+    {
         wait(NULL);
-
-        printf("parent was %d\n", getpid());
     }
 
     exit(EXIT_SUCCESS);
