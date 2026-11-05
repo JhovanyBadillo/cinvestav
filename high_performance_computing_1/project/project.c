@@ -46,3 +46,46 @@ por ver:
     determinar las particiones
 
 */
+
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "divider.h"
+
+#define NUM_CORES 4 /* one process per physical core */
+#define SIZE 10
+
+int main()
+{
+    size_t i;
+    limits_t limits[NUM_CORES];
+
+    divider(NUM_CORES, SIZE, limits);
+
+    pid_t pid = fork();
+
+    if (pid == -1)
+    {
+        printf("fork failed\n");
+        exit(pid);
+    }
+
+    if (pid == 0)
+    { /* this block is executed only by the child process */
+        limits_t child_limits = limits[0];
+
+        printf("[%d] child limits:\n\tinf: %ld, sup: %ld\n", getpid(), child_limits.inf, child_limits.sup);
+
+        printf("child was %d\n", getpid());
+
+        exit(EXIT_SUCCESS);
+    }
+    else
+    { /* this block is executed only by the parent process */
+        wait(NULL);
+
+        printf("parent was %d\n", getpid());
+    }
+
+    exit(EXIT_SUCCESS);
+}

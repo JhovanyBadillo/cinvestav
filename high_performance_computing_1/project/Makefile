@@ -8,7 +8,12 @@ run-generator:
 	time ./${APP}.o
 
 compile-reader:
-	gcc -o reader.o reader.c -lpthread -std=c23
+	gcc -o reader.o reader.c -lpthread
 
 run-reader:
 	./reader.o
+
+compile-project:
+	gcc -o project.o project.c
+run-project:
+	./project.o
