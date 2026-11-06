@@ -1,18 +1,18 @@
 /*
 
 proceso main:
-    *fp = fopen(archivo gigante)
-    establecer limites para cada proceso
-    fork() por cada nucleo fisico
-    a cada proceso hijo le tenemos que dar sus limites del archivo y *fp (via pipe)
+establecer limites para cada proceso ./
+fork() por cada nucleo fisico ./
+a cada proceso hijo le tenemos que dar sus limites del archivo (via pipe) ./
 
 subproceso 1:
-    crear dos hilos
-    determinar, a partir de los limites del subproceso, los limites de lectura
-    de cada hilo, inicio_hiloM, fin_hiloM
-    hilo 1:
+crear dos hilos
+determinar, a partir de los limites del subproceso, los limites de lectura
+de cada hilo, inicio_hiloM, fin_hiloM
+    hilo i:
+        *fp = fopen(archivo gigante)
         leer de *fp los datos que le tocan (inicio_hilo1, fin_hilo1)
-        escribir a un archivo temporal, tmp_file_1 lo que leyó
+        escribir a un archivo en /tmp/XXX lo que leyó
     espera a los hilos
     lee una linea de tmp_file_1 -> line_1(10 numeros en crudo)
     lee una linea de tmp_file_2 -> line_2 (10 numeros en crudo)
@@ -36,10 +36,7 @@ proceso main:
 consideraciones:
     fijar en 4 el numero de nucleos
     subprocesos con fork
-    cada línea del archivo gigante tiene SIZE * 8 + (SIZE - 1) + 1 bytes
-        SIZE * 8 corresponden a los SIZE doubles
-        SIZE - 1 corresponden a los SIZE - 1 espacios en blanco
-        1 corresponde al salto de línea
+    el archivo gigante contiene en binario M doubles
 
 por ver:
     determinar dinámicamente el número de núcleos físicos y con esto
@@ -49,11 +46,15 @@ por ver:
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/mman.h>
+#include <fcntl.h>
 
 #include "divider.h"
 
 #define NUM_CORES 4 /* one process per physical core */
 #define SIZE 10
+
+typedef double data_t;
 
 int main()
 {
@@ -62,6 +63,19 @@ int main()
     limits_t limits[NUM_CORES];
 
     divider(NUM_CORES, SIZE, limits);
+
+    /* Maps the file in the virtual memory and makes it accessible to
+    child processes. */
+    const char *filename = "./data/random_matrix_10.bin";
+    int file = open(filename, O_RDWR);
+    void *mapped_file = mmap(NULL, SIZE * SIZE * sizeof(data_t), PROT_READ | PROT_WRITE, MAP_SHARED, file, 0);
+    close(file);
+
+    if (mapped_file == MAP_FAILED)
+    {
+        printf("mmap failed\n");
+        exit(EXIT_FAILURE);
+    }
 
     for (i = 0; i < NUM_CORES; i++)
     {
@@ -77,7 +91,12 @@ int main()
         {
             limits_t bundle = limits[i];
 
-            printf("[%ld:%d] inf: %ld, sup: %ld\n", i, getpid(), bundle.inf, bundle.sup);
+            size_t i;
+            for (i = bundle.inf; i <= bundle.sup; i++)
+            {
+                printf("[%d] %lf\n", getpid(), ((data_t *)mapped_file)[i]);
+            }
+
             _exit(EXIT_SUCCESS); /* necessary for the for loop to terminate */
         }
     }
@@ -86,6 +105,10 @@ int main()
     {
         wait(NULL);
     }
+
+    printf("parent was %d\n", getpid());
+
+    munmap(mapped_file, SIZE * SIZE * sizeof(data_t));
 
     exit(EXIT_SUCCESS);
 }
