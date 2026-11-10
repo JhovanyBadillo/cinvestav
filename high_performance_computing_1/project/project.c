@@ -48,13 +48,14 @@ por ver:
 #include <unistd.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <pthread.h>
 
+#include "parser.h"
 #include "divider.h"
+#include "sorting.h"
 
 #define NUM_CORES 4 /* one process per physical core */
-#define SIZE 10
-
-typedef double data_t;
+#define NUM_THREADS 2
 
 int main()
 {
@@ -62,20 +63,18 @@ int main()
     pid_t pid;
     limits_t limits[NUM_CORES];
 
-    divider(NUM_CORES, SIZE, limits);
+    size_t number_of_elements;
+    data_t *mapped_binary_file;
 
-    /* Maps the file in the virtual memory and makes it accessible to
-    child processes. */
-    const char *filename = "./data/random_matrix_10.bin";
-    int file = open(filename, O_RDWR);
-    void *mapped_file = mmap(NULL, SIZE * SIZE * sizeof(data_t), PROT_READ | PROT_WRITE, MAP_SHARED, file, 0);
-    close(file);
+    /* Parses into floats, maps the file in the virtual memory and
+    makes it accessible to child processes. */
+    parse(
+        "./data/matriz_a_one_line.txt",
+        "./data/matriz_a_one_line.bin",
+        &mapped_binary_file,
+        &number_of_elements);
 
-    if (mapped_file == MAP_FAILED)
-    {
-        printf("mmap failed\n");
-        exit(EXIT_FAILURE);
-    }
+    divider(NUM_CORES, number_of_elements, limits);
 
     for (i = 0; i < NUM_CORES; i++)
     {
@@ -83,18 +82,63 @@ int main()
 
         if (pid == -1)
         {
-            printf("fork failed\n");
+            perror("fork failed");
             _exit(EXIT_FAILURE);
         }
 
         if (pid == 0)
         {
             limits_t bundle = limits[i];
+            thread_bundle_t thread_bundles[NUM_THREADS];
+            size_t mid = (bundle.inf + bundle.sup) / 2;
 
-            size_t i;
-            for (i = bundle.inf; i <= bundle.sup; i++)
+            thread_bundles[0].data = mapped_binary_file;
+            thread_bundles[1].data = mapped_binary_file;
+
+            pthread_t threads[NUM_THREADS];
+            int thread_result;
+
+            pthread_attr_t attr;
+            pthread_attr_init(&attr);
+            pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+            size_t j;
+            /* thread 1 */
+            /* prepares thread bundle: inf and sup thread limits */
+            thread_bundles[0].inf = bundle.inf;
+            thread_bundles[0].sup = mid;
+
+            thread_result = pthread_create(&threads[0], NULL, sort, &thread_bundles[0]);
+
+            if (thread_result)
             {
-                printf("[%d] %lf\n", getpid(), ((data_t *)mapped_file)[i]);
+                perror("thread creation failed");
+                exit(EXIT_FAILURE);
+            }
+
+            /* thread 2 */
+            /* prepares thread bundle: inf and sup thread limits */
+            thread_bundles[1].inf = mid + 1;
+            thread_bundles[1].sup = bundle.sup;
+
+            thread_result = pthread_create(&threads[1], NULL, sort, &thread_bundles[1]);
+
+            if (thread_result)
+            {
+                perror("thread creation failed");
+                exit(EXIT_FAILURE);
+            }
+
+            pthread_attr_destroy(&attr);
+
+            for (j = 0; j < NUM_THREADS; j++)
+            {
+                thread_result = pthread_join(threads[j], NULL);
+                if (thread_result)
+                {
+                    perror("failed to join thread");
+                    exit(EXIT_FAILURE);
+                }
             }
 
             _exit(EXIT_SUCCESS); /* necessary for the for loop to terminate */
@@ -106,9 +150,12 @@ int main()
         wait(NULL);
     }
 
-    printf("parent was %d\n", getpid());
+    for (i = 0; i < 100; i++)
+    {
+        printf("%f\n", (mapped_binary_file)[i]);
+    }
 
-    munmap(mapped_file, SIZE * SIZE * sizeof(data_t));
+    munmap(mapped_binary_file, number_of_elements * sizeof(data_t));
 
     exit(EXIT_SUCCESS);
 }
