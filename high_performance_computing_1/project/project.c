@@ -1,50 +1,5 @@
-/*
-
-proceso main:
-establecer limites para cada proceso ./
-fork() por cada nucleo fisico ./
-a cada proceso hijo le tenemos que dar sus limites del archivo (via pipe) ./
-
-subproceso 1:
-crear dos hilos
-determinar, a partir de los limites del subproceso, los limites de lectura
-de cada hilo, inicio_hiloM, fin_hiloM
-    hilo i:
-        *fp = fopen(archivo gigante)
-        leer de *fp los datos que le tocan (inicio_hilo1, fin_hilo1)
-        escribir a un archivo en /tmp/XXX lo que leyó
-    espera a los hilos
-    lee una linea de tmp_file_1 -> line_1(10 numeros en crudo)
-    lee una linea de tmp_file_2 -> line_2 (10 numeros en crudo)
-    interprete un numero double de line_1 -> double numero_1
-    interprete un numero double de line_2 -> double numero_2
-    comparar(numero_1, numero_2) -> escribir resultado en archivo temporal tmp_subproceso1
-    comunicar identificador de archivo temporal a proceso main
-
-...
-
-lo mismo para el resto de subprocesos
-
-proceso main:
-    tendra 4 identificadores de archivos temporales con numeros ordenados
-    mergesort(archivo1, archivo2) -> ordenado_1
-    mergesort(archivo3, archivo4) -> ordenado_2
-    mergesort(ordenado_1, ordenado_2) -> ordenado_final
-    escribir en un archivo no temporal el ordenamiento final
-
-
-consideraciones:
-    fijar en 4 el numero de nucleos
-    subprocesos con fork
-    el archivo gigante contiene en binario M doubles
-
-por ver:
-    determinar dinámicamente el número de núcleos físicos y con esto
-    determinar las particiones
-
-*/
-
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -53,15 +8,44 @@ por ver:
 #include "parser.h"
 #include "divider.h"
 #include "sorting.h"
+#include "merge.h"
 
-#define NUM_CORES 4 /* one process per physical core */
 #define NUM_THREADS 2
 
-int main()
+int main(int argc, char **argv)
 {
+    if (argc != 4)
+    {
+        fprintf(stderr, "Usage: %s <file> <cores> <dump>\n", argv[0]);
+        fprintf(stderr, "Arguments:\n");
+        fprintf(stderr, "  file: Path to the input data file\n");
+        fprintf(stderr, "  cores: Number of physical cores to use\n");
+        fprintf(stderr, "  dump: Dump sorted data (y/n)\n");
+
+        exit(EXIT_FAILURE);
+    }
+
+    char *data_filename = argv[1];
+    size_t cores = (size_t)atoi(argv[2]);
+    size_t dump;
+
+    if (strcasecmp("y", argv[3]) == 0)
+    {
+        dump = 1;
+    }
+    else if (strcasecmp("n", argv[3]) == 0)
+    {
+        dump = 0;
+    }
+    else
+    {
+        fprintf(stderr, "<dump>: Dump sorted data (y/n)\n");
+        exit(EXIT_FAILURE);
+    }
+
     size_t i;
     pid_t pid;
-    limits_t limits[NUM_CORES];
+    limits_t limits[cores];
 
     size_t number_of_elements;
     data_t *mapped_binary_file;
@@ -69,14 +53,14 @@ int main()
     /* Parses into floats, maps the file in the virtual memory and
     makes it accessible to child processes. */
     parse(
-        "./data/matriz_a_one_line.txt",
-        "./data/matriz_a_one_line.bin",
+        data_filename,
+        "./matrix.bin",
         &mapped_binary_file,
         &number_of_elements);
 
-    divider(NUM_CORES, number_of_elements, limits);
+    divider(cores, number_of_elements, limits);
 
-    for (i = 0; i < NUM_CORES; i++)
+    for (i = 0; i < cores; i++)
     {
         pid = fork();
 
@@ -141,18 +125,38 @@ int main()
                 }
             }
 
+            merge(mapped_binary_file, bundle.inf, mid, bundle.sup);
+
             _exit(EXIT_SUCCESS); /* necessary for the for loop to terminate */
         }
     }
 
-    for (i = 0; i < NUM_CORES; i++)
+    for (i = 0; i < cores; i++)
     {
         wait(NULL);
     }
 
-    for (i = 0; i < 100; i++)
+    merge_partitions(mapped_binary_file, limits, cores);
+    msync(mapped_binary_file, number_of_elements * sizeof(data_t), MS_SYNC);
+
+    if (dump)
     {
-        printf("%f\n", (mapped_binary_file)[i]);
+        const char *txt_filename = "./sorted_matrix.txt";
+        FILE *txt_file = fopen(txt_filename, "w");
+
+        if (txt_file == NULL)
+        {
+            perror("Error al crear el archivo de texto");
+            munmap(mapped_binary_file, number_of_elements * sizeof(data_t));
+            exit(EXIT_FAILURE);
+        }
+
+        for (i = 0; i < number_of_elements; i++)
+        {
+            fprintf(txt_file, "%lf\n", mapped_binary_file[i]);
+        }
+
+        fclose(txt_file);
     }
 
     munmap(mapped_binary_file, number_of_elements * sizeof(data_t));
