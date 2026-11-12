@@ -1,6 +1,6 @@
 /*
 This program takes as input the data as it comes from a text file
-and converts it into a binary bonche.
+and maps it to virtual memory.
 */
 #ifndef PARSER_H
 #define PARSER_H

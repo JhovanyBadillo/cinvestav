@@ -1,3 +1,8 @@
+/*
+Here we define the `sort` function that sorts a set of numbers.
+This function is used in the execution of a thread.
+*/
+
 #include <stdlib.h>
 #include <pthread.h>
 

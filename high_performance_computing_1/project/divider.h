@@ -1,14 +1,7 @@
 /*
-
 Un programa que, dado el tamaño de una matriz cuadrada A y el número de núcleos
 (procesos), determina los índices inferior y superior de las filas de A que le
 corresponden a cada proceso, considerando un proceso por núcleo.
-
-Para grandes volúmenes de datos: mmap.
-es una llamada al sistema de Unix/Linux que permite mapear archivos, dispositivos o
-memoria en el espacio de direcciones virtuales de un proceso, permitiendo acceder a
-ellos como si fueran matrices en memoria.
-
 */
 
 #include <stdio.h>
