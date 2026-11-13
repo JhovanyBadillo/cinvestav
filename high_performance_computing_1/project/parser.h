@@ -92,7 +92,7 @@ void parse(
         ptr_to_text = end_ptr;
     }
 
-    printf("parsed finished: %ld numbers\n", count_of_floats);
+    printf("Parsing finished. To sort: %ld numbers\n", count_of_floats);
 
     size_t real_binary_file_size = count_of_floats * sizeof(float);
 

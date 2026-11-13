@@ -10,3 +10,4 @@ notes/
 algorithms/
 *.o
 *.txt
+*.bin

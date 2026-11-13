@@ -1,8 +1,9 @@
 # Ordenamiento concurrente
+## Proyecto para la asignatura _Tópicos selectos de cómputo de alto rendimiento_.
 
-**Nombre del proyecto**
-**Fecha**
+_Realizaron: JBC_ y _HMC_.
 
+_Noviembre 2026_
 
 ---
 
@@ -12,10 +13,46 @@ Dada una matriz de números reales de tamaño $N \times N$, con $N >> 1$, desarr
 
 ## Consideraciones
 
-- Se consideran los datos contenidos en el archivo de texto `matriz_a.txt`. Con estos datos, $N = 40,000$.
-- El programa guarda los números ordenados en un archivo binario (`matrix.bin`).
+- Se consideran los datos contenidos en el archivo de texto provisto `matriz_a.txt`. Con estos datos, $N = 40,000$.
+- El programa guarda los números ordenados en el archivo binario `matrix.bin`.
 
-#### Plataformas de compilación y ejecución
+## Análisis de la solución
+
+Si se tiene que procesar una cantidad "grande" de datos y, por suerte, tenemos un procesador multi núcleo a la mano, una decisión, cuando menos sensata, es aprovechar todos los núcleos para el procesamiento y así reducir el tiempo de ejecución. Esto requiere un programa que, en efecto, aproveche todos los núcleos.
+
+En este trabajo se siguió una estrategia "divide y vencerás". El conjunto de $N^2$ números se divide en $K$ bloques, donde $K$ es el número de núcleos físicos disponibles. Si $N^2$ es un múltiplo de $K$, el tamaño de cada bloque es $N^2 / K$. En otro caso uno de los bloques tendrá tamaño $N^2 \mod K$. El _proceso padre_ asigna cada bloque a un _subproceso_. Cada proceso se ejecutará en un núcleo, no necesariamente el mismo durante todo el tiempo de ejecución del programa. La segmentación de los datos es lógica, en el sentido de que toda la matriz de datos reside en la memoria virtual y a cada subproceso se le indica el par de índices que determinan los límites de su bloque de datos.
+Cada subproceso, a su vez, crea un par de hilos para reducir aún más el tamaño de la unidad de trabajo. Esta segmentación también es lógica. Cada hilo ordena con la implementación estándar en C de _quicksort_. Luego, cada subproceso combina los ordenamientos parciales de sus hilos. Finalmente el proceso padre combina _a pares_ los ordenamientos parciales de los subprocesos.
+
+```text
+OrdenamientoConcurrente(números)
+
+1  K ← número de núcleos
+2  N ← cantidad de números por ordenar
+3  *B ← Cargar en memoria los números
+4  *B_i ← Dividir B en K bloques
+5  for i ← 0 .. K - 1
+6    Crear subproceso i
+7      for j ← 0 .. 1
+8        Crear hilo j
+9          ordenamiento_parcial_j ← quicksort(B_ij)
+10       Esperar hilo j
+11     Combinar ordenamientos parciales de hilos
+12   Esperar subproceso i
+13 Combinar ordenamientos parciales de subprocesos
+```
+
+<center>
+    <figure>
+    <img src="./img/flowchart.png" alt="flowchart" width="500">
+    <figcaption>Diagrama de flujo de OrdenamientoConcurrente</figcaption>
+    </figure>   
+</center>
+
+Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se incluyen en la función `parse`. Dado que los subprocesos manipulan simultáneamente diferentes segmentos del mismo espacio de memoria, `parse` devuelve la dirección de la memoria virtual asignada y configurada para compartir. Los datos se leen como `float`s desde el archivo de texto. Para la línea 4 se implementó la función `divide`. Esta función entrega los índices que delimitan los bloques de números que cada subproceso ordena. En el proceso padre se crean los $K$ subprocesos con llamadas al sistema `fork`. Cada subproceso crea y ejecuta 2 hilos utilizando la función `pthread_create()` de la biblioteca `pthread`. Una vez que los hilos concluyen el ordenamiento de sus respectivos bloques (línea 11), la función `merge`, invocada por cada subproceso, combina los bloques ordenados. En la línea 1, el proceso padre combina todos los ordenamientos parciales; usa la función `merge_partitions`. Si $K = 4$, `merge_partitions` combina $B_0$ con $B_1$ y $B_2$ con $B_3$. Luego $B_0 B_1$ con $B_2 B_3$, resultando $B \equiv B_0 B_1 B_2 B_3$ ordenado.
+
+## Resultados
+
+### Plataformas de compilación y ejecución
 
 | Componente | Plataforma 1 | Plataforma 2 |
 | :---: | :---: | :---: |
@@ -26,298 +63,10 @@ Dada una matriz de números reales de tamaño $N \times N$, con $N >> 1$, desarr
 | **Sistema Operativo** | macOS Ventura 13.7.8 | Ubuntu 22.0.1 LTS |
 | **Compilador** | Apple clang version 14.0.3 | gcc |
 
+### Tiempos de ejecución
 
-## Análisis de la solución
+Los tiempos de ejecución se midieron con la función `clock_gettime` de la biblioteca `time` (utilizando `CLOCK_MONOTONIC`), lo que proporciona una resolución de nanosegundos.
 
-Si se tiene que procesar una cantidad "grande" de datos y, por suerte, tenemos un procesador multi núcleo a la mano, una decisión, cuando menos sensata, es aprovechar todos los núcleos para el procesamiento y así reducir el tiempo de ejecución. Esto requiere un programa que, en efecto, aproveche todos los núcleos.
-
-En este trabajo se siguió una estrategia "divide y vencerás". El conjunto de $N^2$ números se divide en $K$ bloques, donde $K$ es el número de núcleos físicos disponibles. Si $N^2$ es un múltiplo de $K$, el tamaño de cada bloque es $N^2 / K$. En otro caso uno de los bloques tendrá tamaño $N^2 \mod K$. El _proceso padre_ asigna cada bloque a un _subproceso_. Cada proceso se ejecutará en un núcleo, no necesariamente el mismo durante todo el tiempo de ejecución del programa. La segmentación de los datos es lógica, en el sentido de que toda la matriz de datos reside en la memoria virtual y a cada bloque se le indica el par de índices que determinan los límites de su bloque de datos.
-Cada subproceso, a su vez, crea un par de hilos para reducir aún más el tamaño de la unidad de trabajo. Esta segmentación también es lógica. Cada hilo ordena con la implementación estándar en C de _quicksort_. Luego, cada subproceso combina los ordenamientos parciales de sus hilos. Finalmente el proceso padre combina _a pares_ los ordenamientos parciales de los subprocesos.
-
-```text
-                                                    [ proceso padre ]
-                                                mmap(N² floats en memoria)
-                                                            |
-                                            +-----------------+-----------------+ ... (K núcleos físicos)
-                                            |                                   |
-                                     [ subproceso 1 ]                      [ subproceso K ]
-                                    (bloque de tamaño N²/K)    ...       (bloque de tamaño N²/K)
-                                        /           \                       /           \
-                                (pthread_create) (pthread_create)   (pthread_create) (pthread_create)
-                                    /               \                   /               \
-                                [ hilo 1 ]       [ hilo 2 ]         [ hilo 1 ]       [ hilo 2 ]
-                                quicksort         quicksort          quicksort        quicksort
-                                    \               /                   \               /
-                                (pthread_join)   (pthread_join)     (pthread_join)   (pthread_join)
-                                        \           /                       \           /
-                                          [ merge ]                           [ merge ]
-                                              |                                   |
-                                              +-----------------+-----------------+
-                                                                |
-                                                              wait
-                                                                |
-                                                        [ proceso padre ]
-                                                          merge a pares
-                                                                |
-                                                       [ datos ordenados ]
-```
-
-En el programa principal se realiza la creación de los procesos mediante la llamada al sistema `fork()`, y cada proceso hijo crea y ejecuta 2 hilos utilizando la función `pthread_create()`.
-
-Para el manejo eficiente de los datos se trabajó con archivos binarios mediante la cabecera `parser.h`, la cual convierte el archivo de texto original (`.txt`) a formato binario y lo mapea en memoria virtual con `mmap` para que los procesos puedan acceder a él de forma compartida.
-
-El tiempo de ejecución se midió con la función `clock_gettime()` de la biblioteca `time.h` (utilizando `CLOCK_MONOTONIC`), lo que proporciona una resolución de nanosegundos.
-
-Finalmente, la cabecera `sorting.h` define la rutina de ordenamiento que ejecuta cada hilo sobre su subconjunto de datos asignado, utilizando la función estándar `qsort()` (algoritmo Quicksort).
-
----
-
-## Código
-
-En la línea 4 llamamos a la función `fork()`, dependiendo del número de cores a utilizar; si ingresamos como parámetro 4 cores, se crearán 4 procesos.
-
-En la línea 21 definimos el tipo de datos para hilos, cada proceso tendrá dos hilos por defecto. En las líneas 34 y 47 creamos el hilo, con sus respectivos parámetros, haciendo notar que utilizamos la función `sort` definida en la cabecera `sorting.h`.
-
-**`project.c`**
-```c
-...
-for (i = 0; i < cores; i++)
-    {
-        pid = fork();
-
-        if (pid == -1)
-        {
-            perror("fork failed");
-            _exit(EXIT_FAILURE);
-        }
-
-        if (pid == 0)
-        {
-            limits_t bundle = limits[i];
-            thread_bundle_t thread_bundles[NUM_THREADS];
-            size_t mid = (bundle.inf + bundle.sup) / 2;
-
-            thread_bundles[0].data = mapped_binary_file;
-            thread_bundles[1].data = mapped_binary_file;
-
-            pthread_t threads[NUM_THREADS];
-            int thread_result;
-
-            pthread_attr_t attr;
-            pthread_attr_init(&attr);
-            pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
-            size_t j;
-            /* thread 1 */
-            /* prepares thread bundle: inf and sup thread limits */
-            thread_bundles[0].inf = bundle.inf;
-            thread_bundles[0].sup = mid;
-
-            thread_result = pthread_create(&threads[0], NULL, sort, &thread_bundles[0]);
-
-            if (thread_result)
-            {
-                perror("thread creation failed");
-                exit(EXIT_FAILURE);
-            }
-
-            /* thread 2 */
-            /* prepares thread bundle: inf and sup thread limits */
-            thread_bundles[1].inf = mid + 1;
-            thread_bundles[1].sup = bundle.sup;
-
-            thread_result = pthread_create(&threads[1], NULL, sort, &thread_bundles[1]);
-
-            if (thread_result)
-            {
-                perror("thread creation failed");
-                exit(EXIT_FAILURE);
-            }
-
-            pthread_attr_destroy(&attr);
-
-            for (j = 0; j < NUM_THREADS; j++)
-            {
-                thread_result = pthread_join(threads[j], NULL);
-                if (thread_result)
-                {
-                    perror("failed to join thread");
-                    exit(EXIT_FAILURE);
-                }
-            }
-
-            merge(mapped_binary_file, bundle.inf, mid, bundle.sup);
-
-            _exit(EXIT_SUCCESS); /* necessary for the for loop to terminate */
-        }
-    }
-...
-```
-
-Para delegar el trabajo a los hilos POSIX (`pthreads`), se definió la estructura `thread_bundle_t` (líneas 6–11), la cual empaqueta el puntero de memoria compartida en (`data`) junto con los índices inferior (`inf`) y superior (`sup`) que delimitan los datos asignados a cada hilo.
-
-La función `sort()` recibe dicho paquete, calcula la cantidad exacta de elementos a procesar y ejecuta la rutina estándar `qsort()`. El criterio de ordenamiento es ascendente. Finalmente, se operan sobre segmentos de memoria disjuntos (gracias a `mmap`), cada hilo finaliza su ejecución mediante `pthread_exit(NULL)` sin requerir banderas de sincronización como (*mutex*).
-
-**`sorting.h`**
-```c
-#include <stdlib.h>
-#include <pthread.h>
-
-#include "types.h"
-
-typedef struct
-{
-    data_t *data;
-    size_t inf;
-    size_t sup;
-} thread_bundle_t;
-
-int compare_doubles(const void *a, const void *b)
-{
-    data_t arg1 = *(const data_t *)a;
-    data_t arg2 = *(const data_t *)b;
-
-    if (arg1 < arg2)
-        return -1;
-    if (arg1 > arg2)
-        return 1;
-
-    return 0;
-}
-
-void *sort(void *thread_bundle)
-{
-    thread_bundle_t bundle = *(thread_bundle_t *)thread_bundle;
-
-    size_t number_of_elements = bundle.sup - bundle.inf + 1;
-    qsort(bundle.data + bundle.inf, number_of_elements, sizeof(data_t), compare_doubles);
-
-    pthread_exit(NULL);
-}
-```
-
-Una vez que los hilos concluyen el ordenamiento local de sus respectivos bloques, la cabecera `merge.h` se encarga de consolidar los subarreglos ordenados mediante dos funciones principales:
-
-* **`merge()`:** Implementa la fusión estándar de dos subarreglos adyacentes delimitados por los índices `[inf, mid]` y `[mid + 1, sup]`.
-* **`merge_partitions()`:** Orquesta la fusión global de todas las particiones.
-
-**`merge.h`**
-```c
-...
-
-void merge(data_t *arr, size_t inf, size_t mid, size_t sup)
-{
-    size_t i, j, k;
-    size_t n1 = mid - inf + 1;
-    size_t n2 = sup - mid;
-
-    data_t *L = (data_t *)malloc(n1 * sizeof(data_t));
-    data_t *R = (data_t *)malloc(n2 * sizeof(data_t));
-
-    if (L == NULL || R == NULL)
-    {
-        perror("malloc failed");
-        exit(EXIT_FAILURE);
-    }
-
-    for (i = 0; i < n1; i++)
-        L[i] = arr[inf + i];
-    for (j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
-
-    i = 0;
-    j = 0;
-    k = inf;
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
-        {
-            arr[k] = L[i];
-            i++;
-        }
-        else
-        {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1)
-    {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-    while (j < n2)
-    {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-
-    free(L);
-    free(R);
-}
-
-void merge_partitions(data_t *arr, limits_t *limits, size_t num_partitions)
-{
-    size_t step;
-    for (step = 1; step < num_partitions; step *= 2)
-    {
-        size_t i;
-        for (i = 0; i + step < num_partitions; i += 2 * step)
-        {
-            size_t inf = limits[i].inf;
-            size_t mid = limits[i + step - 1].sup;
-            size_t sup = limits[i + 2 * step - 1 < num_partitions ? i + 2 * step - 1 : num_partitions - 1].sup;
-
-            merge(arr, inf, mid, sup);
-        }
-    }
-}
-
-#endif // MERGE_H
-```
-
----
-
-## Compilación
-
-Localizarse en la carpeta `../project/`, estando en la carpeta.
-
-Compilar de la siguiente manera:
-
-```bash
-user@user:~/project$ gcc -o project.o project.c -pthread
-```
-
-Ejecutar el archivo `.o`, dando los parámetros definidos a continuación:
-
-```bash
-user@user:~/project$ ./project.o matriz_a.txt 4 y
-```
-
-* Primer parámetro es el archivo de texto con la matriz deseada, en este caso, txt dado por el profesor.
-* Segundo parámetro es el número de procesos.
-* Tercer parámetro: Se escribirá en un archivo final de texto (`y`) o solo se ordenará (`n`).
-
-Al ejecutar de esta forma se creará el archivo de texto `sorted_matrix.txt` el cual contendrá los elementos ordenados.
-
-![Archivo txt ordenado](images/sorted.png)
-
----
-
-### Archivo visualizado en editores de texto
-
-El archivo se ordenará de forma ascendente, esto es de menor a mayor.
-
-* **Visualización 1:** ![Visualización 1](images/seccion_ord1.png)
-* **Visualización 2:** ![Visualización 2](images/ordenado.PNG)
-
----
-
-## Resultados
 
 ### Con parámetro "y" escritura de archivo
 

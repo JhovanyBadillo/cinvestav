@@ -16,7 +16,7 @@ struct limits
     size_t sup;
 };
 
-void divider(size_t num_cores, size_t size, limits_t *limits)
+void divide(size_t num_cores, size_t size, limits_t *limits)
 {
     if (num_cores > size)
     {

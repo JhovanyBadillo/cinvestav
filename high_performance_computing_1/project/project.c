@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         &mapped_binary_file,
         &number_of_elements);
 
-    divider(cores, number_of_elements, limits);
+    divide(cores, number_of_elements, limits);
 
     for (i = 0; i < cores; i++)
     {
