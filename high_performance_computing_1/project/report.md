@@ -1,4 +1,4 @@
-# Portada
+# Ordenamiento concurrente
 
 **Nombre del proyecto**
 **Fecha**
@@ -6,38 +6,61 @@
 
 ---
 
-## Especificaciones de las plataformas de ejecución
+## Problema
 
+Dada una matriz de números reales de tamaño $N \times N$, con $N >> 1$, desarrollar un programa en C que ordene de forma ascendente estos números y los almacene en un archivo. El programa debe usar procesos e hilos.
+
+## Consideraciones
+
+- Se consideran los datos contenidos en el archivo de texto `matriz_a.txt`. Con estos datos, $N = 40,000$.
+- El programa guarda los números ordenados en un archivo binario (`matrix.bin`).
+
+#### Plataformas de compilación y ejecución
 
 | Componente | Plataforma 1 | Plataforma 2 |
 | :---: | :---: | :---: |
 | **Procesador** | Intel Core i7 7920HQ | AMD Ryzen 7 6800H |
 | **Núcleos** | 4 (2 hilos $\times$ núcleo) | 8 (2 hilos $\times$ núcleo) |
 | **Frecuencia base** | 3.1 GHz |3.2 GHz |
-| **Memoria RAM** | 16 GB LPDDR3 (2133 MHz) |32 GB |
+| **Memoria RAM** | 16 GB LPDDR3 (2133 MHz) | 32 GB |
 | **Sistema Operativo** | macOS Ventura 13.7.8 | Ubuntu 22.0.1 LTS |
+| **Compilador** | Apple clang version 14.0.3 | gcc |
 
-
-## Problema
-
-Dada una matriz de números reales de tamaño $N \times N$, desarrollar un programa en C que ordene de forma ascendente estos números y los almacene en un archivo. El programa debe hacer uso de procesos e hilos y aprovechar la biblioteca `pthread`.
-
-## Consideraciones
-
-- Se consideran los datos contenidos en el archivo de texto `matriz_a.txt`. Con estos datos, $N = 40,000$.
-- El programa almacena los números ordenados en el archivo binario `matrix.bin`.
 
 ## Análisis de la solución
 
-Hablar de por qué se usan hilos y procesos y qué pasa si no se usan.
+Si se tiene que procesar una cantidad "grande" de datos y, por suerte, tenemos un procesador multi núcleo a la mano, una decisión, cuando menos sensata, es aprovechar todos los núcleos para el procesamiento y así reducir el tiempo de ejecución. Esto requiere un programa que, en efecto, aproveche todos los núcleos.
 
-Luego hablar de la estrategia:
+En este trabajo se siguió una estrategia "divide y vencerás". El conjunto de $N^2$ números se divide en $K$ bloques, donde $K$ es el número de núcleos físicos disponibles. Si $N^2$ es un múltiplo de $K$, el tamaño de cada bloque es $N^2 / K$. En otro caso uno de los bloques tendrá tamaño $N^2 \mod K$. El _proceso padre_ asigna cada bloque a un _subproceso_. Cada proceso se ejecutará en un núcleo, no necesariamente el mismo durante todo el tiempo de ejecución del programa. La segmentación de los datos es lógica, en el sentido de que toda la matriz de datos reside en la memoria virtual y a cada bloque se le indica el par de índices que determinan los límites de su bloque de datos.
+Cada subproceso, a su vez, crea un par de hilos para reducir aún más el tamaño de la unidad de trabajo. Esta segmentación también es lógica. Cada hilo ordena con la implementación estándar en C de _quicksort_. Luego, cada subproceso combina los ordenamientos parciales de sus hilos. Finalmente el proceso padre combina _a pares_ los ordenamientos parciales de los subprocesos.
 
-- crear tantos procesos como núcleos hay y cada proceso crea 2 hilos.
-- a cada proceso se le asigna un bloque de memoria sobre la cual trabajar
-- cada hilo trabaja sobre una mitad del bloque del proceso y ordena con qsort
-- cada proceso combina los ordenamientos parciales de sus hilos
-- el proceso padre combina los ordenamientos parciales de sus subprocesos
+```text
+                                                    [ proceso padre ]
+                                                mmap(N² floats en memoria)
+                                                            |
+                                            +-----------------+-----------------+ ... (K núcleos físicos)
+                                            |                                   |
+                                     [ subproceso 1 ]                      [ subproceso K ]
+                                    (bloque de tamaño N²/K)    ...       (bloque de tamaño N²/K)
+                                        /           \                       /           \
+                                (pthread_create) (pthread_create)   (pthread_create) (pthread_create)
+                                    /               \                   /               \
+                                [ hilo 1 ]       [ hilo 2 ]         [ hilo 1 ]       [ hilo 2 ]
+                                quicksort         quicksort          quicksort        quicksort
+                                    \               /                   \               /
+                                (pthread_join)   (pthread_join)     (pthread_join)   (pthread_join)
+                                        \           /                       \           /
+                                          [ merge ]                           [ merge ]
+                                              |                                   |
+                                              +-----------------+-----------------+
+                                                                |
+                                                              wait
+                                                                |
+                                                        [ proceso padre ]
+                                                          merge a pares
+                                                                |
+                                                       [ datos ordenados ]
+```
 
 En el programa principal se realiza la creación de los procesos mediante la llamada al sistema `fork()`, y cada proceso hijo crea y ejecuta 2 hilos utilizando la función `pthread_create()`.
 

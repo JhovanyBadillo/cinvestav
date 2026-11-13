@@ -1,3 +1,7 @@
+/*
+
+*/
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -39,7 +43,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        fprintf(stderr, "<dump>: Dump sorted data (y/n)\n");
+        fprintf(stderr, "<dump>: Dump sorted data to text file (y/n)\n");
         exit(EXIT_FAILURE);
     }
 
