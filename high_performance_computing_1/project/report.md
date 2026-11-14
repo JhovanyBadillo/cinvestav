@@ -145,26 +145,22 @@ _Tiempos de ejecución_
 ## Gráficas de desempeño.
 
 
-<center>
-    <figure>
-    <img src="./img/proc2/source2n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 2 procesos</figcaption>
-    </figure>   
-</center>
+<div align="center">
+  <figure style="margin-bottom: 2rem;">
+    <img src="./img/proc2/source2n.png" alt="Monitor de CPU con 2 procesos" width="500">
+    <figcaption><i>Fig 1. Monitor de CPU (2 procesos).</i></figcaption>
+  </figure>
 
-<center>
-    <figure>
-    <img src="./img/proc6/resource6n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 6 procesos</figcaption>
-    </figure>   
-</center>
+  <figure style="margin-bottom: 2rem;">
+    <img src="./img/proc6/resource6n.png" alt="Monitor de CPU con 6 procesos" width="500">
+    <figcaption><i>Fig 2. Monitor de CPU (6 procesos).</i></figcaption>
+  </figure>
 
-<center>
-    <figure>
-    <img src="./img/proc8/resource8n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 8 procesos</figcaption>
-    </figure>   
-</center>
+  <figure style="margin-bottom: 2rem;">
+    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU con 8 procesos" width="500">
+    <figcaption><i>Fig 3. Monitor de CPU (8 procesos).</i></figcaption>
+  </figure>
+</div>
 
 # Herammienta alternativa (top)
 
