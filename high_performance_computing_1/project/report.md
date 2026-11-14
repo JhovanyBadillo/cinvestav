@@ -151,16 +151,28 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc2/source2n.png" alt="Monitor de CPU - 2 procesos" width="450">
+    <br>
     <figcaption><i>Fig 1a. Monitor de CPU (2 procesos).</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc2/top2n.png" alt="Comando top - 2 procesos" width="450">
+    <br>
     <figcaption><i>Fig 1b. Comando top (2 procesos).</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc2/tiempo2n.png" alt="Tiempos - 2 procesos" width="450">
+    <br>
     <figcaption><i>Fig 1c. Tiempos.</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
 </div>
 
 ---
@@ -170,16 +182,28 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc6/resource6n.png" alt="Monitor de CPU - 6 procesos" width="450">
+      <br>
     <figcaption><i>Fig 2a. Monitor de CPU (6 procesos).</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc6/top6n.png" alt="Comando top - 6 procesos" width="450">
+      <br> 
     <figcaption><i>Fig 2b. Comando top (6 procesos).</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc6/tiempo6n.png" alt="Tiempos- 6 procesos" width="450">
+    <br>
     <figcaption><i>Fig 2c. Tiempos.</i></figcaption>
   </figure>
+    <br>
+    <br>
+    <br>
 </div>
 
 ---
@@ -195,7 +219,6 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   <br>
   <br>
   <br>
-  <br>
   <figure style="margin: 0; text-align: center;">
     <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
     <br>
@@ -204,13 +227,11 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   <br>
   <br>
   <br>
-  <br>
   <figure style="margin: 0; text-align: center;">
     <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 6 procesos" width="450">
     <br>
     <figcaption><i>Fig 3c. Tiempos.</i></figcaption>
   </figure>
-  <br>
   <br>
   <br>
   <br>
