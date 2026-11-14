@@ -8,6 +8,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <time.h>
 
 #include "parser.h"
 #include "divider.h"
@@ -56,6 +57,12 @@ int main(int argc, char **argv)
 
     /* Parses into floats, maps the file in the virtual memory and
     makes it accessible to child processes. */
+
+    struct timespec total_start, sorting_start;
+    struct timespec total_end, sorting_end;
+
+    clock_gettime(CLOCK_MONOTONIC, &total_start);
+
     parse(
         data_filename,
         "./matrix.bin",
@@ -63,6 +70,8 @@ int main(int argc, char **argv)
         &number_of_elements);
 
     divide(cores, number_of_elements, limits);
+
+    clock_gettime(CLOCK_MONOTONIC, &sorting_start);
 
     for (i = 0; i < cores; i++)
     {
@@ -141,7 +150,12 @@ int main(int argc, char **argv)
     }
 
     merge_partitions(mapped_binary_file, limits, cores);
+
+    clock_gettime(CLOCK_MONOTONIC, &sorting_end);
+
     msync(mapped_binary_file, number_of_elements * sizeof(data_t), MS_SYNC);
+
+    clock_gettime(CLOCK_MONOTONIC, &total_end);
 
     if (dump)
     {
@@ -164,6 +178,15 @@ int main(int argc, char **argv)
     }
 
     munmap(mapped_binary_file, number_of_elements * sizeof(data_t));
+
+    double total_elapsed = (total_end.tv_sec - total_start.tv_sec) +
+                           (double)(total_end.tv_nsec - total_start.tv_nsec) / 1e9;
+
+    double sorting_elapsed = (sorting_end.tv_sec - sorting_start.tv_sec) +
+                             (double)(sorting_end.tv_nsec - sorting_start.tv_nsec) / 1e9;
+
+    printf("total elapsed time: %lf\n", total_elapsed);
+    printf("sorting elapsed time: %lf\n", sorting_elapsed);
 
     exit(EXIT_SUCCESS);
 }
