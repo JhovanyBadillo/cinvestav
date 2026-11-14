@@ -87,29 +87,57 @@ _Tiempos de ejecución_
       <td align="center" style="text-align: center; vertical-align: middle;">1</td>
       <td align="center" style="text-align: center; vertical-align: middle;">284</td>
       <td align="center" style="text-align: center; vertical-align: middle;">556</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">211</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">314</td>
     </tr>
     <tr>
       <td align="center" style="text-align: center; vertical-align: middle;">2</td>
       <td align="center" style="text-align: center; vertical-align: middle;">169</td>
       <td align="center" style="text-align: center; vertical-align: middle;">415</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">131</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">233</td>
     </tr>
     <tr>
       <td align="center" style="text-align: center; vertical-align: middle;">3</td>
       <td align="center" style="text-align: center; vertical-align: middle;">166</td>
       <td align="center" style="text-align: center; vertical-align: middle;">401</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">110</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">213</td>
     </tr>
     <tr>
       <td align="center" style="text-align: center; vertical-align: middle;">4</td>
       <td align="center" style="text-align: center; vertical-align: middle;">168</td>
       <td align="center" style="text-align: center; vertical-align: middle;">407</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
-      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">95</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">196</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">5</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">81</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">183</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">6</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">74</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">177</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">7</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">73</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">175</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">8</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">71</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">182</td>
     </tr>
     <tr>
       <td align="center" style="text-align: center; vertical-align: middle;">5</td>
