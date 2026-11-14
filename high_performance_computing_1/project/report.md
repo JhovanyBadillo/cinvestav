@@ -142,7 +142,7 @@ _Tiempos de ejecución_
   </tbody>
 </table>
 
-## Gráficas de desempeño y herramientas de monitoreo
+## Gráficas de desempeño, herramientas de monitoreo y ejecución de programa.
 
 A continuación se realiza el análisis comparativo del comportamiento del CPU bajo distintas cargas de trabajo (2, 6 y 8 procesos), evaluado mediante el monitor del sistema (Linux Ubuntu) y validado con la herramienta alternativa `top`.
 
@@ -156,6 +156,10 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   <figure style="text-align: center; margin: 0;">
     <img src="./img/proc2/top2n.png" alt="Comando top - 2 procesos" width="450">
     <figcaption><i>Fig 1b. Comando top (2 procesos).</i></figcaption>
+  </figure>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/tiempo2n.png" alt="Tiempos - 2 procesos" width="450">
+    <figcaption><i>Fig 1c. Tiempos.</i></figcaption>
   </figure>
 </div>
 
@@ -172,6 +176,10 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
     <img src="./img/proc6/top6n.png" alt="Comando top - 6 procesos" width="450">
     <figcaption><i>Fig 2b. Comando top (6 procesos).</i></figcaption>
   </figure>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/tiempo6n.png" alt="Tiempos- 6 procesos" width="450">
+    <figcaption><i>Fig 2c. Tiempos.</i></figcaption>
+  </figure>
 </div>
 
 ---
@@ -179,12 +187,16 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
 ### 3. Escenario con 8 procesos
 
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
-  <figure style="text-align: center; margin: 0;">
+  <figure style="margin: 0; text-align: center;">
     <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
     <figcaption><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
   </figure>
-  <figure style="text-align: center; margin: 0;">
+  <figure style="margin: 0; text-align: center;">
     <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
     <figcaption><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
+  </figure>
+  <figure style="margin: 0; text-align: center;">
+    <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 6 procesos" width="450">
+    <figcaption><i>Fig 3c. Tiempos.</i></figcaption>
   </figure>
 </div>
