@@ -142,7 +142,7 @@ _Tiempos de ejecución_
   </tbody>
 </table>
 
-## Gráficas de desempeño, herramientas de monitoreo y ejecución de programa.
+## Gráficas de desempeño, herramientas de monitoreo y Tiempo de ejecución del programa.
 
 A continuación se realiza el análisis comparativo del comportamiento del CPU bajo distintas cargas de trabajo (2, 6 y 8 procesos), evaluado mediante el monitor del sistema (Linux Ubuntu) y validado con la herramienta alternativa `top`.
 
