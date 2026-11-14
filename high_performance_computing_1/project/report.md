@@ -203,19 +203,21 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   </figure>
 </div>
 
-<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
-  <figure style="margin: 0; text-align: center;">
+
+
+
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem; overflow-x: auto; white-space: nowrap;">
+  <figure style="margin: 0; text-align: center; flex: 0 0 auto;">
     <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
     <figcaption style="text-align: center; margin-top: 8px; font-size: 0.9em; color: #555;"><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
   </figure>
-  <figure style="margin: 0; text-align: center;">
+  <figure style="margin: 0; text-align: center; flex: 0 0 auto;">
     <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
     <figcaption style="text-align: center; margin-top: 8px; font-size: 0.9em; color: #555;"><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
   </figure>
-  <figure style="margin: 10px 0 0 0; text-align: center; width: 100%;">
+  <figure style="margin: 0; text-align: center; flex: 0 0 auto;">
     <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 8 procesos" width="450">
-    <figcaption style="text-align: center; margin-top: 8px; font-size: 0.9em; color: #555;"><i>Fig 3c. Tiempos de ejecución.</i></figcaption>
+    <figcaption style="text-align: center; margin-top: 8px; font-size: 0.9em; color: #555;"><i>Fig 3c. Tiempos.</i></figcaption>
   </figure>
 </div>
-
 
