@@ -48,13 +48,13 @@ OrdenamientoConcurrente(números)
     </figure>   
 </center>
 
-Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se incluyen en la función `parse`. Dado que los subprocesos manipulan simultáneamente diferentes segmentos del mismo espacio de memoria, `parse` devuelve la dirección de la memoria virtual asignada y configurada para compartirse. Los datos se leen como `float`s desde el archivo de texto. Para la línea 4 se implementó la función `divide`. Esta función entrega los índices que delimitan los bloques de números que cada subproceso ordena. En el proceso padre se crean los $K$ subprocesos con llamadas al sistema `fork`. Cada subproceso crea y ejecuta 2 hilos utilizando la función `pthread_create()` de la biblioteca `pthread`. Una vez que los hilos concluyen el ordenamiento de sus respectivos bloques (línea 11), la función `merge`, invocada por cada subproceso, combina los bloques ordenados. En la línea 1, el proceso padre combina todos los ordenamientos parciales; usa la función `merge_partitions`. Si $K = 4$, `merge_partitions` combina $B_0$ con $B_1$ y $B_2$ con $B_3$. Luego $B_0 B_1$ con $B_2 B_3$, resultando $B \equiv B_0 B_1 B_2 B_3$ ordenado.
+Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se incluyen en la función `parse`. Dado que los subprocesos manipulan simultáneamente diferentes segmentos del mismo espacio de memoria, `parse` devuelve la dirección de la memoria virtual asignada y configurada para compartirse. Los datos se leen como `float`s desde el archivo de texto. Para la línea 4 se implementó la función `divide`. Esta función entrega los índices que delimitan los bloques de números que cada subproceso ordena. En el proceso padre se crean los $K$ subprocesos con llamadas al sistema `fork`. Cada subproceso crea y ejecuta 2 hilos utilizando la función `pthread_create` de la biblioteca `pthread`. Una vez que los hilos concluyen el ordenamiento de sus respectivos bloques (línea 11), la función `merge`, invocada por cada subproceso, combina los bloques ordenados. En la línea 1, el proceso padre combina todos los ordenamientos parciales; usa la función `merge_partitions`. Si $K = 4$, `merge_partitions` combina $B_0$ con $B_1$ y $B_2$ con $B_3$. Luego $B_0 B_1$ con $B_2 B_3$, resultando $B \equiv B_0 B_1 B_2 B_3$ ordenado.
 
 ## Resultados
 
 ### Plataformas de compilación y ejecución
 
-| Componente | Plataforma 1 | Plataforma 2 |
+|  | Plataforma 1 | Plataforma 2 |
 | :---: | :---: | :---: |
 | **Procesador** | Intel Core i7 7920HQ | AMD Ryzen 7 6800H |
 | **Núcleos** | 4 (2 hilos $\times$ núcleo) | 8 (2 hilos $\times$ núcleo) |
@@ -67,55 +67,50 @@ Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se inc
 
 Los tiempos de ejecución se midieron con la función `clock_gettime` de la biblioteca `time` (utilizando `CLOCK_MONOTONIC`), lo que proporciona una resolución de nanosegundos.
 
-
-### Con parámetro "y" escritura de archivo
-
-#### **1 proceso**
-
-* **Panel resources Ubuntu:** ![Panel resources Ubuntu](images/resorces1y.png)
-* **Tiempos:** ![Tiempos](images/timepo1y.png)
-
-> **Tiempo ordenamiento sort:** 211.47 segundos
-
-#### **8 procesos**
-
-* **Panel resources Ubuntu:** ![Panel resources Ubuntu](images/resources8y.png)
-* **Tiempos:** ![Tiempos](images/timepo8y.png)
-
-* **Comando top:** ![Comando top](images/top8y.png)
-* *Resultado 8 procesos*
-
-> **Tiempo ordenamiento sort :** 40.31 segundos
-
----
-
-### **Gráfica Procesos vs tiempo de ejecución**
-
-![Procesos vs Tiempo Escritura](images/grafica1y.png)
-* *Procesos vs Tiempo Escritura*
-
----
-
-### Con parámetro "n" sin escritura de archivo
-
-#### **1 proceso**
-
-* **Tiempos:** ![Tiempos](images/tiempo1n.png)
-* *Resultado 1 proceso*
-
-> **Tiempo ordenamiento sort :** 207.27 segundos
-
-#### **8 procesos**
-
-* **Tiempos:** ![Tiempos](images/timepo8n.png)
-* *Resultado 8 procesos*
-
-> **Tiempo ordenamiento sort :** 40.65 segundos
-
----
-
-### **Gráfica Procesos vs tiempo de ejecución**
-
-![Procesos vs Tiempo Sin escritura](images/grafican.png)
-* *Procesos vs Tiempo Sin escritura*
+_Tiempos de ejecución_
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2"># de núcleos</th>
+      <th colspan="2" align="center" style="text-align: center; vertical-align: middle;">Plataforma 1</th>
+      <th colspan="2" align="center" style="text-align: center; vertical-align: middle;">Plataforma 2</th>
+    </tr>
+    <tr>
+      <th>Ordenamiento [s]</th>
+      <th>Total [s]</th>
+      <th>Ordenamiento [s]</th>
+      <th>Total [s]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">1</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">284</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">556</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">2</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">169</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">415</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">3</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">166</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">401</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">4</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">168</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">407</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+  </tbody>
+</table>
 
