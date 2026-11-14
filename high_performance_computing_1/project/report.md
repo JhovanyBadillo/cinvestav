@@ -205,7 +205,7 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
 
 
 
-
+<center>
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem; overflow-x: auto; white-space: nowrap;">
   <figure style="margin: 0; text-align: center; flex: 0 0 auto;">
     <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
@@ -220,4 +220,4 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
     <figcaption style="text-align: center; margin-top: 8px; font-size: 0.9em; color: #555;"><i>Fig 3c. Tiempos.</i></figcaption>
   </figure>
 </div>
-
+</center>
