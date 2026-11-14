@@ -191,6 +191,8 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
     <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="400">
     <figcaption><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
   </figure>
+  <figure>
+  </figure>
   <figure style="margin: 0; text-align: center;">
     <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="400">
     <figcaption><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
