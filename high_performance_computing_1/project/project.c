@@ -1,6 +1,21 @@
 /*
-
-*/
+ * Noviembre 2026
+ *
+ * Realizaron: JBC y HMC
+ *
+ * Compilación
+ * macOS: clang -o project project.c
+ * ubuntu: gcc -o project project.c
+ *
+ * Nota: dependiendo de la versión de glibc, puede ser necesario
+ * compilar con la bandera -lrt (por la dependencia de la biblioteca
+ * time).
+ *
+ *
+ * Ejecución
+ * ./project matriz_a.txt <número de núcleos disponibles> <guardar ordenamiento en txt sí (y) o no (n)>
+ * Ejemplo: ./project matriz_a.txt 3 n
+ */
 
 #include <stdlib.h>
 #include <string.h>

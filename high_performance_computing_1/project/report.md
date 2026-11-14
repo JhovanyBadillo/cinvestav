@@ -1,5 +1,5 @@
 # Ordenamiento concurrente
-## Proyecto para la asignatura _Tópicos selectos de cómputo de alto rendimiento_.
+## Proyecto para la asignatura _Tópicos selectos de cómputo de alto rendimiento_
 
 _Realizaron: JBC_ y _HMC_.
 
