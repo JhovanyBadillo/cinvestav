@@ -142,48 +142,49 @@ _Tiempos de ejecución_
   </tbody>
 </table>
 
-## Gráficas de desempeño.
+## Gráficas de desempeño y herramientas de monitoreo
 
+A continuación se realiza el análisis comparativo del comportamiento del CPU bajo distintas cargas de trabajo (2, 6 y 8 procesos), evaluado mediante el monitor del sistema (Linux Ubuntu) y validado con la herramienta alternativa `top`.
 
-<div align="center">
-  <figure style="margin-bottom: 2rem;">
-    <img src="./img/proc2/source2n.png" alt="Monitor de CPU con 2 procesos" width="500">
-    <figcaption><i>Fig 1. Monitor de CPU (2 procesos).</i></figcaption>
+### 1. Escenario con 2 procesos
+
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/source2n.png" alt="Monitor de CPU - 2 procesos" width="450">
+    <figcaption><i>Fig 1a. Monitor de CPU (2 procesos).</i></figcaption>
   </figure>
-
-  <figure style="margin-bottom: 2rem;">
-    <img src="./img/proc6/resource6n.png" alt="Monitor de CPU con 6 procesos" width="500">
-    <figcaption><i>Fig 2. Monitor de CPU (6 procesos).</i></figcaption>
-  </figure>
-
-  <figure style="margin-bottom: 2rem;">
-    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU con 8 procesos" width="500">
-    <figcaption><i>Fig 3. Monitor de CPU (8 procesos).</i></figcaption>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/top2n.png" alt="Comando top - 2 procesos" width="450">
+    <figcaption><i>Fig 1b. Comando top (2 procesos).</i></figcaption>
   </figure>
 </div>
 
-# Herammienta alternativa (top)
+---
 
+### 2. Escenario con 6 procesos
 
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/resource6n.png" alt="Monitor de CPU - 6 procesos" width="450">
+    <figcaption><i>Fig 2a. Monitor de CPU (6 procesos).</i></figcaption>
+  </figure>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/top6n.png" alt="Comando top - 6 procesos" width="450">
+    <figcaption><i>Fig 2b. Comando top (6 procesos).</i></figcaption>
+  </figure>
+</div>
 
-<center>
-    <figure>
-    <img src="./img/proc2/top2n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 2 procesos</figcaption>
-    </figure>   
-</center>
+---
 
-<center>
-    <figure>
-    <img src="./img/proc6/top6n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 6 procesos</figcaption>
-    </figure>   
-</center>
+### 3. Escenario con 8 procesos
 
-<center>
-    <figure>
-    <img src="./img/proc8/top8n.png" alt="flowchart" width="500">
-    <figcaption>Monitor de CPU. 8 procesos</figcaption>
-    </figure>   
-</center>
-
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
+    <figcaption><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
+  </figure>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
+    <figcaption><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
+  </figure>
+</div>
