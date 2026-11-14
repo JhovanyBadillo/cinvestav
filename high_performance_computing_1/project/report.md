@@ -63,7 +63,7 @@ Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se inc
 | **Frecuencia base** | 3.1 GHz |3.2 GHz |
 | **Memoria RAM** | 16 GB LPDDR3 (2133 MHz) | 32 GB |
 | **Sistema Operativo** | macOS Ventura 13.7.8 | Ubuntu 22.0.1 LTS |
-| **Compilador** | Apple clang version 14.0.3 | gcc |
+| **Compilador** | Apple clang version 14.0.3 | gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0 |
 
 ### Tiempos de ejecución
 
