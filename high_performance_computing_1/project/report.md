@@ -188,7 +188,8 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
 
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
   <figure style="margin: 0; text-align: center;">
-    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="400">
+    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
+    <br>
     <figcaption><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
   </figure>
   <br>
@@ -196,7 +197,8 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   <br>
   <br>
   <figure style="margin: 0; text-align: center;">
-    <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="400">
+    <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
+    <br>
     <figcaption><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
   </figure>
   <br>
@@ -204,7 +206,8 @@ A continuación se realiza el análisis comparativo del comportamiento del CPU b
   <br>
   <br>
   <figure style="margin: 0; text-align: center;">
-    <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 6 procesos" width="400">
+    <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 6 procesos" width="450">
+    <br>
     <figcaption><i>Fig 3c. Tiempos.</i></figcaption>
   </figure>
   <br>
