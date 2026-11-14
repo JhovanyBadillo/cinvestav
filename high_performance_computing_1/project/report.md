@@ -111,6 +111,34 @@ _Tiempos de ejecución_
       <td align="center" style="text-align: center; vertical-align: middle;">—</td>
       <td align="center" style="text-align: center; vertical-align: middle;">—</td>
     </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">5</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">6</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">7</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
+    <tr>
+      <td align="center" style="text-align: center; vertical-align: middle;">8</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">-</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+      <td align="center" style="text-align: center; vertical-align: middle;">—</td>
+    </tr>
   </tbody>
 </table>
 
