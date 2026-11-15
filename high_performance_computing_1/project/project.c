@@ -21,6 +21,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <pthread.h>
 #include <time.h>

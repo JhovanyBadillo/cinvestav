@@ -48,6 +48,8 @@ OrdenamientoConcurrente(números)
     </figure>   
 </center>
 
+
+
 Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se incluyen en la función `parse`. Dado que los subprocesos manipulan simultáneamente diferentes segmentos del mismo espacio de memoria, `parse` devuelve la dirección de la memoria virtual asignada y configurada para compartirse. Los datos se leen como `float`s desde el archivo de texto. Para la línea 4 se implementó la función `divide`. Esta función entrega los índices que delimitan los bloques de números que cada subproceso ordena. En el proceso padre se crean los $K$ subprocesos con llamadas al sistema `fork`. Cada subproceso crea y ejecuta 2 hilos utilizando la función `pthread_create` de la biblioteca `pthread`. Una vez que los hilos concluyen el ordenamiento de sus respectivos bloques (línea 11), la función `merge`, invocada por cada subproceso, combina los bloques ordenados. En la línea 1, el proceso padre combina todos los ordenamientos parciales; usa la función `merge_partitions`. Si $K = 4$, `merge_partitions` combina $B_0$ con $B_1$ y $B_2$ con $B_3$. Luego $B_0 B_1$ con $B_2 B_3$, resultando $B \equiv B_0 B_1 B_2 B_3$ ordenado.
 
 ## Resultados
@@ -61,7 +63,7 @@ Las instrucciones que derivan de la línea 3 de `OrdenamientoConcurrente` se inc
 | **Frecuencia base** | 3.1 GHz |3.2 GHz |
 | **Memoria RAM** | 16 GB LPDDR3 (2133 MHz) | 32 GB |
 | **Sistema Operativo** | macOS Ventura 13.7.8 | Ubuntu 22.0.1 LTS |
-| **Compilador** | Apple clang version 14.0.3 | gcc |
+| **Compilador** | Apple clang version 14.0.3 | gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0 |
 
 ### Tiempos de ejecución
 
@@ -141,4 +143,101 @@ _Tiempos de ejecución_
     </tr>
   </tbody>
 </table>
+
+## Gráficas de desempeño, herramientas de monitoreo y Tiempo de ejecución del programa.
+
+A continuación se realiza el análisis comparativo del comportamiento del CPU bajo distintas cargas de trabajo (2, 6 y 8 procesos), evaluado mediante el monitor del sistema (Linux Ubuntu) y validado con la herramienta alternativa `top`.
+
+### 1. Escenario con 2 procesos
+
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/source2n.png" alt="Monitor de CPU - 2 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 1a. Monitor de CPU (2 procesos).</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/top2n.png" alt="Comando top - 2 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 1b. Comando top (2 procesos).</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc2/tiempo2n.png" alt="Tiempos - 2 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 1c. Tiempos.</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+</div>
+
+---
+
+### 2. Escenario con 6 procesos
+
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/resource6n.png" alt="Monitor de CPU - 6 procesos" width="450">
+      <br>
+    <figcaption><i>Fig 2a. Monitor de CPU (6 procesos).</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/top6n.png" alt="Comando top - 6 procesos" width="450">
+      <br> 
+    <figcaption><i>Fig 2b. Comando top (6 procesos).</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+  <figure style="text-align: center; margin: 0;">
+    <img src="./img/proc6/tiempo6n.png" alt="Tiempos- 6 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 2c. Tiempos.</i></figcaption>
+  </figure>
+    <br>
+    <br>
+    <br>
+</div>
+
+---
+
+### 3. Escenario con 8 procesos
+
+<div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
+  <figure style="margin: 0; text-align: center;">
+    <img src="./img/proc8/resource8n.png" alt="Monitor de CPU - 8 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 3a. Monitor de CPU (8 procesos).</i></figcaption>
+  </figure>
+  <br>
+  <br>
+  <br>
+  <figure style="margin: 0; text-align: center;">
+    <img src="./img/proc8/top8n.png" alt="Comando top - 8 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 3b. Comando top (8 procesos).</i></figcaption>
+  </figure>
+  <br>
+  <br>
+  <br>
+  <figure style="margin: 0; text-align: center;">
+    <img src="./img/proc8/tiempo8n.png" alt="Tiempo - 6 procesos" width="450">
+    <br>
+    <figcaption><i>Fig 3c. Tiempos.</i></figcaption>
+  </figure>
+  <br>
+  <br>
+  <br>
+</div>
+
+
 
