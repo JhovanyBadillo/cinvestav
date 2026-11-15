@@ -235,7 +235,7 @@ Se muestra un comparativo del comportamiento del CPU bajo distintas cargas de tr
 
 ### Gráficas Procesos versus Tiempo.
 
-Se muestran las gráficas de procesos versus tiempo de Ordenamiento y tiempo Total. (Plataforma 1)
+Se muestran las gráficas de procesos versus tiempo de Ordenamiento y tiempo Tota. Para la Plataforma 1 y Plataforma 2
 
 
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
