@@ -260,7 +260,7 @@ Se muestran las gráficas de procesos versus tiempo de Ordenamiento y tiempo Tot
 
 <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 2rem;">
   <figure style="margin: 0; text-align: center;">
-    <img src="./img/graf/ord1.png" alt="Tiempo ordenamiento" width="450">
+    <img src="./img/graf/ord2.png" alt="Tiempo ordenamiento" width="450">
     <br>
     <figcaption><i>Tiempo ordenamiento plataforma 2</i></figcaption>
   </figure>
@@ -268,7 +268,7 @@ Se muestran las gráficas de procesos versus tiempo de Ordenamiento y tiempo Tot
   <br>
   <br>
   <figure style="margin: 0; text-align: center;">
-    <img src="./img/graf/total1.png" alt="Tiempo total" width="450">
+    <img src="./img/graf/total2.png" alt="Tiempo total" width="450">
     <br>
     <figcaption><i>Tiempo total plataforma 2</i></figcaption>
   </figure>
