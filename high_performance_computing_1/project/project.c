@@ -4,8 +4,8 @@
  * Realizaron: JBC y HMC
  *
  * Compilación
- * macOS: clang -o project project.c
- * ubuntu: gcc -o project project.c
+ * macOS: clang -o project project.c -lpthread
+ * ubuntu: gcc -o project project.c -pthread
  *
  * Nota: dependiendo de la versión de glibc, puede ser necesario
  * compilar con la bandera -lrt (por la dependencia de la biblioteca
