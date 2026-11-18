@@ -4,17 +4,19 @@
  * Realizaron: JBC y HMC
  *
  * Compilación
- * macOS: clang -o project project.c
- * ubuntu: gcc -o project project.c
+ * macOS: clang -o project project.c -lpthread
+ * ubuntu: gcc -o project project.c -lpthread
  *
  * Nota: dependiendo de la versión de glibc, puede ser necesario
  * compilar con la bandera -lrt (por la dependencia de la biblioteca
  * time).
  *
- *
  * Ejecución
  * ./project matriz_a.txt <número de núcleos disponibles> <guardar ordenamiento en txt sí (y) o no (n)>
- * Ejemplo: ./project matriz_a.txt 3 n
+ *
+ * Ejemplo
+ * Ejecutar project con el archivo matriz_a.txt usando 3 núcleos sin guardar txt ordenado
+ * ./project matriz_a.txt 3 n
  */
 
 #include <stdlib.h>
