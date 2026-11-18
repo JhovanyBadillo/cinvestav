@@ -1,0 +1,1 @@
+The assignment was to play with some basic circuits implementation in VHDL.
