@@ -26,4 +26,4 @@ Now suppose we want to compare one bit vector $Q$ to a set of $N \gg 1$ vectors 
 
 Comparing $Q$ to each of the $B_i$, $0 \le i < N$, will give us a vector of Hamming distances:
 
-$$D_H(Q, B) = \begin{pmatrix} d_H(Q, B_0) \\ d_H(Q, B_1) \\ \vdots \\ d_H(Q, B_{N-1}) \end{pmatrix}$$.
+$$D_H(Q, \mathbf{B}) = \left( \begin{array}{c} d_H(Q, B_0) \\ d_H(Q, B_1) \\ \vdots \\ d_H(Q, B_{N-1}) \end{array} \right)$$
