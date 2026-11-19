@@ -1,0 +1,1 @@
+The assignment was to implement standalone Huffman compression. The program has to serialize the tree used for compression within the compressed binary in order to the receiver to be able to recover the original message.
