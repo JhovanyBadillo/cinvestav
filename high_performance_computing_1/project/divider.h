@@ -5,7 +5,6 @@ corresponden a cada proceso, considerando un proceso por núcleo.
 */
 
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
 
 typedef struct limits limits_t;
@@ -24,7 +23,7 @@ void divide(size_t num_cores, size_t size, limits_t *limits)
         exit(1);
     }
 
-    int OFFSET = (int)floor(size / num_cores);
+    int OFFSET = (int)(size / num_cores);
 
     size_t i;
     limits_t bundle;
