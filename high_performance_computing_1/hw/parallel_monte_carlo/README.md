@@ -31,7 +31,7 @@ donde $EE = \{ (x, y) : x^2 + y^2 \leq 1 \}$ es el conjunto de puntos azules y $
 
 ### Generación de números aleatorios
 
-Para generar la muestra aleatoria de puntos se usó la función `ran2` del _Numerical Recipes in C_ con las modificaciones para que sea reentrante. La función `ran2` es un generador de números aleatorios con distribución uniforme y con un periodo mayor que $2\times 10^{18}$. Para los propósitos de este trabajo, genera números aleatorios más que suficientes. Los números que genera están en el intervalo cerrado $(0.0, 1.0)$.
+Para generar la muestra aleatoria de puntos se usó la función `ran2` del _Numerical Recipes in C_ con las modificaciones para que sea reentrante. La función `ran2` es un generador de números aleatorios con distribución uniforme y con un periodo mayor que $2\times 10^{18}$. Para los propósitos de este trabajo, genera números aleatorios más que suficientes. Los números que genera están en el intervalo abierto $(0.0, 1.0)$.
 
 ```C
 ran2 no reentrante
